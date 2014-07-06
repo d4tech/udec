@@ -1,31 +1,53 @@
 'use strict';
 
-describe('Unit test of factories', function () {
+describe('Unit: JSONFormatter', function () {
   var passKey, 
-      $rootscope,
-      $scope,
-      controller,
-      formatter;
+      JSONformatter;
   beforeEach(function (){
     module('udecApp');
 
     inject(function($injector) {
       passKey = $injector.get('passKey');
-      formatter = $injector.get('formatHandler');
+      JSONformatter = $injector.get('JSONFormatter');
+      // console.log(formatter);
     });
   });
 
-  describe( 'Passkey' ,function () {
-
-    //it('should
+  describe('Initialization' , function () {
     it('Should have the value 123456', function (){
       expect(passKey).toEqual('123456');
     });
+
+    it('there should be the JSONFormatter factory', function () {
+      expect(JSONformatter).not.toBeUndefined();
+    });
+
+    it('The Factory should have two methods', function () {
+      expect(angular.isFunction(JSONformatter.stringify)).toBeTruthy();
+      expect(angular.isFunction(JSONformatter.parse)).toBeTruthy();
+    });
   });
 
-  describe("Initialization" , function () {
-    it('there should be the format Handler', function () {
-      expect(formatter).not.toBeUndefined();
+  describe('Data Handling',function () {
+    describe('Checks for stringify',function () {
+      it('Should return a string', function () {
+        expect(typeof JSONformatter.stringify(
+          CryptoJS.AES.encrypt('Some Message', 'some Key')
+        )).toBe(typeof '');
+      });
+
+      xit('Should return the Correct data', function () {
+        expect(JSONformatter.stringify(
+          CryptoJS.AES.encrypt('Some Message', 'some key')
+        )).toEqual('{"ct":"0e689437404192dc6c0b563e18bc48d8","iv":"f02f265e2f98f7889aa97898943726ee","s":"910d20bab84380fc"}');
+      });
+    });
+
+    describe('Checks for parse', function () {
+      it('Should return an Object', function () {
+        expect(JSONformatter.parse('{"ct":"0e689437404192dc6c0b563e18bc48d8","iv":"f02f265e2f98f7889aa97898943726ee","s":"910d20bab84380fc"}'))
+        .toEqual(JSON.parse('{"ct":"0e689437404192dc6c0b563e18bc48d8","iv":"f02f265e2f98f7889aa97898943726ee","s":"910d20bab84380fc"}'));
+      });
     });
   });
 });

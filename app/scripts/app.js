@@ -29,12 +29,12 @@ var udecApp = angular.module('udecApp', [
       .otherwise({
         redirectTo: '/'
       });
-  })
-  .value('passKey','123456');
+  }).value('passKey','123456');
 
-udecApp.factory('formatHandler',[function formatHandlerFactory() {
+/*udecApp.factory('formatHandler',['passKey',function formatHandlerFactory(passKey) {
     
-    var stringify = function (encrypted) {
+    return {
+     stringify : function (encrypted) {
       // Create json object with ciphertext
       var jsonObj = {
         ct: encrypted.ciphertext.toString()
@@ -50,9 +50,9 @@ udecApp.factory('formatHandler',[function formatHandlerFactory() {
 
       // stringify JSON object
       return JSON.stringify(jsonObj);
-    };
+    },
 
-    var parse = function (jsonStr) {
+    parse : function (jsonStr) {
       //parse json string
       var jsonObj= {};
 
@@ -62,12 +62,13 @@ udecApp.factory('formatHandler',[function formatHandlerFactory() {
         jsonObj = jsonStr;
       }
 
-      /*
-       *Key handling Method, needs to be only invoked if passkey is not the key
+      
+       Key handling Method, needs to be only invoked if passkey is not the key
        *if passkey is used as the key then
        *  just parse the passKey as its the header that is going to be encrypted
        *else apply PBDKF2 as its the file thats getting encrypted
-      */
+       
+      
       if (jsonObj.key === passKey){
         jsonObj.key = CryptoJS.enc.Hex.parse(jsonObj.key);
       }
@@ -93,9 +94,9 @@ udecApp.factory('formatHandler',[function formatHandlerFactory() {
         jsonObj.salt = CryptoJS.enc.Hex.parse(jsonObj.s);
       }
       return jsonObj;
-    };
-  }]
-);
+    }
+  }
+}]);*/
 // .factory('Crypto',['passKey','formatHandler', function CryptoFactory(passKey, formatHandler){
 //     var encrypt = function(plaintext, params) {
 //       cipherParams = formatHandler.parse(params) || {};
