@@ -46,7 +46,19 @@ describe('Unit: JSONFormatter', function () {
     describe('Checks for parse', function () {
       it('Should return an Object', function () {
         expect(JSONformatter.parse('{"ct":"0e689437404192dc6c0b563e18bc48d8","iv":"f02f265e2f98f7889aa97898943726ee","s":"910d20bab84380fc"}'))
-        .toEqual(JSON.parse('{"ct":"0e689437404192dc6c0b563e18bc48d8","iv":"f02f265e2f98f7889aa97898943726ee","s":"910d20bab84380fc"}'));
+        .toEqual(
+          {
+            ct: CryptoJS.enc.Hex.parse("0e689437404192dc6c0b563e18bc48d8"),
+            iv: CryptoJS.enc.Hex.parse("f02f265e2f98f7889aa97898943726ee"),
+            s: CryptoJS.enc.Hex.parse("910d20bab84380fc")
+          }
+        );
+      });
+
+      it('If the key is 123456 new key should not be generated', function () {
+        expect(JSONformatter.parse({key:passKey})).toEqual({
+          key: CryptoJS.enc.Hex.parse(passKey)
+        });
       });
     });
   });

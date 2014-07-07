@@ -14,6 +14,10 @@ module.exports = function(config) {
     // testing framework to use (jasmine/mocha/qunit/...)
     frameworks: ['jasmine'],
 
+    preprocessors: {
+      '*.js': ['jshint']
+    },
+
     // list of files / patterns to load in the browser
     files: [
       'bower_components/angular/angular.js',
