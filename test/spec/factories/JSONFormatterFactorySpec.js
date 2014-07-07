@@ -13,7 +13,7 @@ describe('Unit: JSONFormatter', function () {
     });
   });
 
-  describe('Initialization' , function () {
+  xdescribe('Initialization' , function () {
     it('Should have the value 123456', function (){
       expect(passKey).toEqual('123456');
     });
@@ -31,9 +31,7 @@ describe('Unit: JSONFormatter', function () {
   describe('Data Handling',function () {
     describe('Checks for stringify',function () {
       it('Should return a string', function () {
-        expect(typeof JSONformatter.stringify(
-          CryptoJS.AES.encrypt('Some Message', 'some Key')
-        )).toBe(typeof '');
+        expect(typeof JSONformatter.stringify(CryptoJS.AES.encrypt('Some Message', 'some Key'))).toBe(typeof '');
       });
 
       xit('Should return the Correct data', function () {
