@@ -45,12 +45,13 @@ angular.module('udecApp').factory('JSONFormatter',['passKey','Wrangler',function
       }
 
       //optionally set ciphertext(ct), key, iv and salt 
+
       if(jsonObj.ct){
         jsonObj.ct = Wrangler.set(jsonObj.ct);
       }
        
-      if(jsonObj.key) {         
-          jsonObj.key = Wrangler.set(jsonObj.key);
+      if(jsonObj.key) {
+        jsonObj.key = Wrangler.set(jsonObj.key);
       }
       
       if (jsonObj.iv) {
