@@ -28,7 +28,63 @@ angular.module('udecApp').service('CryptoMan',['passKey','JSONFormatter','Wrangl
         );
 	};
 
+	this.stringify = function (argument) {
+		// Create json object with ciphertext
+		var jsonObj = {};
+
+	    // optionally stringify ciphertext, iv, salt and key
+      	if(argument.ciphertext){
+        	jsonObj.ct = Wrangler.getString(argument.ciphertext);
+      	}
+
+      	if (argument.iv) {
+        	jsonObj.iv = Wrangler.getString(argument.iv);
+      	}
+      	if (argument.salt) {
+     		jsonObj.s = Wrangler.getString(argument.salt);
+      	}
+
+      	if (argument.key){
+      		jsonObj.key = Wrangler.getString(argument.key);
+      	}
+
+      // stringify JSON object
+      return JSON.stringify(jsonObj);
+    };
+
+    this.parse = function (jsonStr) {
+	    //initialize json Object
+	    var jsonObj= {};
+
+	    //if the input argument, jsonStr is a String type
+	    //Convert it to json, provided the string has a JSON ordering
+	    if(typeof(jsonStr) === typeof('')){
+		    jsonObj = JSON.parse(jsonStr);
+	    } else {
+	        jsonObj = jsonStr;
+	    }
+	    //optionally set ciphertext(ct), key, iv and salt only if they are of String type 
+
+	    if(jsonObj.ct && typeof jsonObj.ct === 'string'){
+	        jsonObj.ct = Wrangler.set(jsonObj.ct);
+	    }
+	      
+	    //convert only if key is of string type or if its the Global Angular value PassKey
+	    if(jsonObj.key === passKey || typeof jsonObj.key === 'string') {
+	        jsonObj.key = Wrangler.set(jsonObj.key);  
+	    }
+	      
+	    if (jsonObj.iv && (typeof jsonObj.iv === 'string')) {
+	        jsonObj.iv = Wrangler.set(jsonObj.iv);
+	    }
+	    if (jsonObj.s && (typeof jsonObj.s === 'string')) {
+	        jsonObj.s = Wrangler.set(jsonObj.s);
+	    }
+	    return jsonObj;
+    };
+
 	this.encrypt = function(plaintext, args) {
+		var args = self.parse(args);
 		if(typeof args === typeof {} && args.key && args.iv){
 			return CryptoJS.AES.encrypt(
 				plaintext,
@@ -41,18 +97,18 @@ angular.module('udecApp').service('CryptoMan',['passKey','JSONFormatter','Wrangl
 			);
 		} else {
 			// console.log(args);
-			throw new Error('Invalid args');
+			throw new Error('Invalid args for Encrypt' + args);
 		}
 		
 	};
 
 	this.decrypt = function (args) {
-		// args = JSONFormatter.parse(args);
-		// if(typeof args === {} && args.key && args.iv && args.ct){
+		//parse the arguments
+		args = self.parse(args);
+		//again check if they have all the required vals else throw an ERR
+		if(typeof args === "object" && args.key && args.iv && args.ct){
 			
-			// console.log(args);
-			var cipherStuff = CryptoJS.lib.CipherParams.create({ciphertext : Wrangler.set(args.ct)});
-			// console.log(cipherStuff.ciphertext.toString()===args.ct.toString());
+			var cipherStuff = CryptoJS.lib.CipherParams.create({ciphertext : args.ct});
 			return  CryptoJS.AES.decrypt(
 				cipherStuff,
 				args.key,
@@ -62,6 +118,8 @@ angular.module('udecApp').service('CryptoMan',['passKey','JSONFormatter','Wrangl
                     padding: CryptoJS.pad.Pkcs7
 				}
 			).toString(CryptoJS.enc.Utf8);
-		// }
+		} else {
+			throw new Error('Invalid args for Decrypt' + args)
+		}
 	}
 }]);	

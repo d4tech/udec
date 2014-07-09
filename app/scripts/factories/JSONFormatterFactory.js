@@ -43,21 +43,22 @@ angular.module('udecApp').factory('JSONFormatter',['passKey','Wrangler',function
       } else {
         jsonObj = jsonStr;
       }
+      console.log(jsonObj);
+      //optionally set ciphertext(ct), key, iv and salt only if they are of String type 
 
-      //optionally set ciphertext(ct), key, iv and salt 
-
-      if(jsonObj.ct){
+      if(jsonObj.ct && typeof jsonObj.ct === 'string'){
         jsonObj.ct = Wrangler.set(jsonObj.ct);
       }
-       
-      if(jsonObj.key) {
-        jsonObj.key = Wrangler.set(jsonObj.key);
+      
+      //convert only if key is of string type or if its the Global Angular value PassKey
+      if(jsonObj.key === passKey || typeof jsonObj.key === 'string') {
+        jsonObj.key = Wrangler.set(jsonObj.key);  
       }
       
-      if (jsonObj.iv) {
+      if (jsonObj.iv && (typeof jsonObj.iv === 'string')) {
         jsonObj.iv = Wrangler.set(jsonObj.iv);
       }
-      if (jsonObj.s) {
+      if (jsonObj.s && (typeof jsonObj.s === 'string')) {
         jsonObj.s = Wrangler.set(jsonObj.s);
       }
       return jsonObj;

@@ -29,7 +29,7 @@ xdescribe('Unit: JSONFormatter', function () {
   });
 
   describe('Data Handling',function () {
-    describe('Checks for stringify',function () {
+    xdescribe('Checks for stringify',function () {
       it('Should return a string', function () {
         expect(typeof JSONformatter.stringify(CryptoJS.AES.encrypt('Some Message', 'some Key'))).toBe(typeof '');
       });
@@ -42,7 +42,7 @@ xdescribe('Unit: JSONFormatter', function () {
     });
 
     describe('Checks for parse', function () {
-      it('Should return an Object', function () {
+      it('Should return an Object for passing a String', function () {
         expect(JSONformatter.parse(
           JSON.parse('{"ct":"0e689437404192dc6c0b563e18bc48d8","iv":"f02f265e2f98f7889aa97898943726ee","s":"910d20bab84380fc"}'))
         )
