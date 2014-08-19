@@ -1,7 +1,17 @@
 'use strict';
-angular.module('udecApp').service('CryptoMan',['passKey','JSONFormatter','Wrangler',function CryptoManService (passKey, JSONFormatter, Wrangler) {
+angular.module('udecApp').service('CryptoMan',['passKey','globalIV', function CryptoManService (passKey, globalIV) {
 	
 	var self = this;
+
+	this.set = function (argument) {
+		//parse the argument to Hex type
+		return CryptoJS.enc.Base64.parse(argument);
+	};
+
+	this.getString = function  (argument) {
+		//stringify the argument
+		return argument.toString(CryptoJS.enc.Base64);
+	};
 	
 	this.getRand = function () {
 		//return a Random value of 128bits
@@ -15,17 +25,19 @@ angular.module('udecApp').service('CryptoMan',['passKey','JSONFormatter','Wrangl
 		var salt = self.getRand();
 		//if key is String then parse it
 		if(typeof key === 'string'){
-			key = Wrangler.set(key);
+			key = self.set(key);
 		}
 		//return PBKDF2'ed key
 		//even if a file is previously encrypted
 		//pss its key as the argument and again apply PBKDF2 over it
 		//so that the no of iterations increases
-		return CryptoJS.PBKDF2(
+		key = CryptoJS.PBKDF2(
 	        key,
 	        salt,
 	        {keySize: 256/32, iterations: 1000}
         );
+
+        return self.getString(key); 
 	};
 
 	this.stringify = function (argument) {
@@ -34,22 +46,22 @@ angular.module('udecApp').service('CryptoMan',['passKey','JSONFormatter','Wrangl
 
 	    // optionally stringify ciphertext, iv, salt and key
       	if(argument.ciphertext){
-        	jsonObj.ct = Wrangler.getString(argument.ciphertext);
+        	jsonObj.ct = self.getString(argument.ciphertext);
       	}
 
       	if (argument.iv) {
-        	jsonObj.iv = Wrangler.getString(argument.iv);
+        	jsonObj.iv = self.getString(argument.iv);
       	}
       	if (argument.salt) {
-     		jsonObj.s = Wrangler.getString(argument.salt);
+     		jsonObj.s = self.getString(argument.salt);
       	}
 
       	if (argument.key){
-      		jsonObj.key = Wrangler.getString(argument.key);
+      		jsonObj.key = self.getString(argument.key);
       	}
 
-      // stringify JSON object
-      return JSON.stringify(jsonObj);
+      	// stringify JSON object
+      	return jsonObj;
     };
 
     this.parse = function (jsonStr) {
@@ -66,27 +78,35 @@ angular.module('udecApp').service('CryptoMan',['passKey','JSONFormatter','Wrangl
 	    //optionally set ciphertext(ct), key, iv and salt only if they are of String type 
 
 	    if(jsonObj.ct && typeof jsonObj.ct === 'string'){
-	        jsonObj.ct = Wrangler.set(jsonObj.ct);
+	        jsonObj.ct = self.set(jsonObj.ct);
 	    }
 	      
 	    //convert only if key is of string type or if its the Global Angular value PassKey
 	    if(jsonObj.key === passKey || typeof jsonObj.key === 'string') {
-	        jsonObj.key = Wrangler.set(jsonObj.key);  
+	        jsonObj.key = self.set(jsonObj.key);  
 	    }
-	      
-	    if (jsonObj.iv && (typeof jsonObj.iv === 'string')) {
-	        jsonObj.iv = Wrangler.set(jsonObj.iv);
+	    //convert only if iv is of string type or if its the Global Angular value globalIV
+	    if (jsonObj.iv && ((typeof jsonObj.iv === 'string') || jsonObj.iv === globalIV)) {
+	        jsonObj.iv = self.set(jsonObj.iv);
 	    }
 	    if (jsonObj.s && (typeof jsonObj.s === 'string')) {
-	        jsonObj.s = Wrangler.set(jsonObj.s);
+	        jsonObj.s = self.set(jsonObj.s);
 	    }
 	    return jsonObj;
     };
 
 	this.encrypt = function(plaintext, args) {
+		var encrypted;
 		var args = self.parse(args);
+
+		// If the incoming plaintext is an object then stringify the object 
+		if (typeof plaintext === 'object'){
+			plaintext = JSON.stringify(plaintext);
+		}
+
+		// Check if the args are correct else throw an error
 		if(typeof args === typeof {} && args.key && args.iv){
-			return CryptoJS.AES.encrypt(
+			encrypted = CryptoJS.AES.encrypt(
 				plaintext,
 				args.key,
 				{
@@ -99,7 +119,7 @@ angular.module('udecApp').service('CryptoMan',['passKey','JSONFormatter','Wrangl
 			// console.log(args);
 			throw new Error('Invalid args for Encrypt' + args);
 		}
-		
+		return self.stringify(encrypted);		 
 	};
 
 	this.decrypt = function (args) {
