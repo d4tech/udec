@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <title></title>
     <meta name="description" content="">
-    <meta name="viewport" content="width=device-width">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css(.) styles/vendor.css -->
     <!-- bower:css -->
@@ -17,6 +17,39 @@
     <!--<script src="bower_components/cryptojslib/rollups/*.js"></script>-->
   </head>
   <body ng-app="udecApp">
+    <!-- <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+      
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#"></a>
+        </div>
+        <div class="navbar-collapse collapse">
+    
+          <ul class="nav navbar-nav navbar-right">
+                <li><a href="#"></a></li> 
+                <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Name <span class="caret"></span></a>
+                <ul class="dropdown-menu" role="menu">  
+                  <li><a href="#">Settings</a></li>
+                  <li><a href="#">Install </a></li>
+                  <li><a href="#">Upgrade </a></li>             
+                  <li><a href="#">Sign Out</a></li>
+                  <li><a href="#"></a></li></ul>
+                  <li><a href="index2.html">Upload</a></li>   
+                  <li><a href="#">Help</a></li>
+          </ul>
+          <form class="navbar-form navbar-right">
+            <input type="text" class="form-control" placeholder="Search...">
+          </form>
+        </div>
+      </div>
+    </div> -->
     <!--[if lt IE 7]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
@@ -28,8 +61,6 @@
         <p><span class="glyphicon glyphicon-heart"></span> from the Yeoman team</p>
       </div>
     <!-- </div> -->
-
-
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
      <!--<script>-->
        <!--(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){-->
@@ -70,6 +101,7 @@
         <script src="scripts/controllers/main.js"></script>
         <script src="scripts/controllers/about.js"></script>
         <script src="scripts/services/CryptoManService.js"></script>
+        <script src="scripts/factories/FetchFilesFactory.js"></script>
         <!-- endbuild -->
 </body>
 </html>

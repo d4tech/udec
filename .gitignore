@@ -1,7 +1,9 @@
-node_modules
+node_modules/
 dist
-.tmp
+*.tmp
 .sass-cache
 bower_components
-.swp
-.pyc
+*.swp
+*.pyc
+y/
+index.yaml

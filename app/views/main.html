@@ -1,7 +1,7 @@
 <div class="navbar navbar-inverse" role="navigation">
     <div class="container">
       <span class="pull-left">
-        <h3 class="text-muted">UDeC</h3>
+        <h2 class="text-muted">UDeC</h2>
       </span>
       <div>
         <span class="pull-right">
@@ -11,6 +11,44 @@
       </div>  
     </div>
 </div>
-<div class="container">
-
-</div>
+<div class="container-fluid">
+  <div class="row">
+    <!-- <div class="col-sm-3 col-md-2 sidebar">
+      <ul class="nav nav-sidebar">
+        <li class="active"><a href="#">Files</a></li>
+        <li><a href="#">Photos</a></li>
+        <li><a href="#">Sharing</a></li>
+        <li><a href="#">Links</a></li>
+       <li><a href="#">Events</a></li>
+      </ul>     
+    </div> -->
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+      <!-- <h1 class="page-header">UDec</h1> -->
+      <div class="row placeholders">
+        <div class="col-xs-6 col-sm-3 placeholder"></div>
+        <div class="col-xs-6 col-sm-3 placeholder"></div>
+        <div class="col-xs-6 col-sm-3 placeholder"></div>
+        <div class="col-xs-6 col-sm-3 placeholder"></div>
+      </div>
+      <h2 class="sub-header"></h2>
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Kind</th>
+              <th>Modified</th> 
+            </tr>
+          </thead>
+          <tbody ng-repeat="file in files">
+            <tr>
+              <th>{{file.file_name}}</th>
+              <th>underDev</th>
+              <th>{{file.modified_date}}</th>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+    </div>
