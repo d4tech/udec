@@ -33,6 +33,7 @@ describe('Unit: FileOps', function(){
     it('The factory should have two methods', function () {
       expect(angular.isFunction(FileOps.getFileList)).toBeTruthy();
       expect(angular.isFunction(FileOps.getFile)).toBeTruthy();
+      expect(angular.isFunction(FileOps.uploadFile)).toBeTruthy();
     });
   });
   

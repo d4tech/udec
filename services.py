@@ -6,5 +6,6 @@ app = WSGIApplication([
 		('/rest/getBlobUploader', main.SendBlobUploader),
 		('/rest/upload', main.UploadHandler),
 		('/rest/home', main.QueryHandler),
-		('/rest/serve/([^/]+)?', main.BlobServeHandler)
+		('/rest/serve/([^/]+)?', main.BlobServeHandler),
+		('/rest/lastUploadKey', main.LastUploadedFile)
 	],debug=True)

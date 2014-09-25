@@ -42,8 +42,8 @@
           </thead>
           <tbody ng-repeat="file in files">
             <tr>
-              <th>{{file.file_name}}</th>
-              <th>underDev</th>
+	      <th ng-click="getFile(file.blob_key)"><a>{{file.file_name}}</a></th>
+	      <th>{{file.kind}}<th>
               <th>{{file.modified_date}}</th>
             </tr>
           </tbody>
